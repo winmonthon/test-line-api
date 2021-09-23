@@ -42,6 +42,12 @@ function handleEvent(event) {
       text: "hello from Heroku Server",
     };
     return client.replyMessage(event.replyToken, payload);
+  } else if (event.message.text === "เพิ่มงาน") {
+    const payload = {
+      type: "text",
+      text: "ต้องการเพิ่มงานอะไรครับ",
+    };
+    return client.replyMessage(event.replyToken, payload);
   }
 
   // create a echoing text message
