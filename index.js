@@ -21,7 +21,7 @@ const app = express();
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
 app.post("/callback", line.middleware(config), (req, res) => {
-  Promise.all(req.body.events.map(taskController))
+  Promise.all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
     .catch((err) => {
       console.error(err);
@@ -30,7 +30,39 @@ app.post("/callback", line.middleware(config), (req, res) => {
 });
 
 // event handler
-//function handleEvent(event)
+function handleEvent(event) {
+  if (event.type !== "message" || event.message.type !== "text") {
+    // ignore non-text-message event
+    return Promise.resolve(null);
+  } else if (
+    event.message.type === "message" ||
+    event.message.text === "hello"
+  ) {
+    const payload = {
+      type: "text",
+      text: "hello from Heroku Server",
+    };
+    return client.replyMessage(event.replyToken, payload);
+  } else if (event.message.text === "เพิ่มงานใหม่") {
+    const payload = {
+      type: "text",
+      text: "ต้องการเพิ่มงานอะไรครับ",
+    };
+    return client.replyMessage(event.replyToken, payload);
+  } else if (event.message.text === "ตารางงาน") {
+    const payload = {
+      type: "text",
+      text: "นี้คือตาราง",
+    };
+    return client.replyMessage(event.replyToken, payload);
+  }
+
+  // create a echoing text message
+  const echo = { type: "text", text: event.message.text };
+
+  // use reply API
+  return client.replyMessage(event.replyToken, echo);
+}
 
 // listen on port
 const port = process.env.PORT || 3000;
