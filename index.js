@@ -4,6 +4,11 @@ const line = require("@line/bot-sdk");
 const express = require("express");
 //const taskController = require("./controller/task.controller");
 
+const LINE_MESSAGING_API = "https://api.line.me/v2/bot/message";
+const LINE_HEADER = {
+  "Content-Type": "application/json",
+  Authorization: `Bearer Q4b+wmv9dBIZxyoM7/vqvfINbBIcrEQShuMCTXZ23ZpOqakgAeVF6RSI9qHQ/aT7LgfFAdWT/7Fp8O44V9bjq5mf7yfk5A4hsQIWOqMNLz7wK2M30MlH47ktf43vxYnPy9p7SgpQRm4hSwVP43rclgdB04t89/1O/w1cDnyilFU=`,
+};
 // create LINE SDK config from env variables
 const config = {
   channelAccessToken:
@@ -42,14 +47,26 @@ function handleEvent(event) {
       type: "text",
       text: `hello from someone`,
     };
-    return (
-      client
-        //.replyMessage(event.replyToken, payload)
-        .pushMessage({
-          U30918c965c0984fb90f0dca605c61617,
-          payload,
-        })
-    );
+    return request({
+      method: `POST`,
+      uri: `${LINE_MESSAGING_API}/push`,
+      headers: LINE_HEADER,
+      body: JSON.stringify({
+        to: `U30918c965c0984fb90f0dca605c61617`,
+        messages: [
+          {
+            type: `text`,
+            text: msg,
+          },
+        ],
+      }),
+    })
+      .then(() => {
+        return res.status(200).send(`Done`);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
   } else if (event.message.text === "เพิ่มงานใหม่") {
     const payload = {
       type: "text",
