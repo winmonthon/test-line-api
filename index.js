@@ -42,11 +42,16 @@ function handleEvent(event) {
       type: "text",
       text: "hello from Heroku Server",
     };
-    return client.replyMessage(event.replyToken, payload);
+    return client
+      .replyMessage(event.replyToken, payload)
+      .pushMessage({
+        to: "U30918c965c0984fb90f0dca605c61617",
+        messages: "hello hello from someone",
+      });
   } else if (event.message.text === "เพิ่มงานใหม่") {
     const payload = {
       type: "text",
-      text: event,
+      text: `ต้องการเพิ่มงานอะไรครับ from ${event.source.userId}`,
     };
     return client.replyMessage(event.replyToken, payload);
   } else if (event.message.text === "ตารางงาน") {
