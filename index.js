@@ -26,8 +26,7 @@ const app = express();
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
 app.post("/callback", line.middleware(config), async (req, res) => {
-  const event = req.body.events;
-  await handleEvent(event)
+  await handleEvent(req.body)
     .then((result) => res.json(result))
     .catch((err) => {
       console.error(err);
@@ -36,13 +35,13 @@ app.post("/callback", line.middleware(config), async (req, res) => {
 });
 
 // event handler
-function handleEvent(event) {
+const handleEvent = (bodyResponse) => {
   // create a echoing text message
-  const echo = { type: "text", text: event.message.text };
+  const echo = { type: "text", text: bodyResponse.events[0].message.text };
 
   // use reply API
-  return client.replyMessage(event.replyToken, echo);
-}
+  return client.replyMessage(bodyResponse.events[0].replyToken, echo);
+};
 
 // listen on port
 const port = process.env.PORT || 3000;
