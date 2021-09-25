@@ -46,7 +46,7 @@ function handleEvent(event) {
   } else if (event.message.text === "เพิ่มงานใหม่") {
     const payload = {
       type: "text",
-      text: ["ต้องการเพิ่มงานอะไรครับ", `${event.source.userId}`],
+      text: `ต้องการเพิ่มงานอะไรครับ from ${event.source.userId}`,
     };
     return client.replyMessage(event.replyToken, payload);
   } else if (event.message.text === "ตารางงาน") {
