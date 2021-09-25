@@ -2,7 +2,7 @@
 
 const line = require("@line/bot-sdk");
 const express = require("express");
-const taskController = require("./controller/task.controller");
+//const taskController = require("./controller/task.controller");
 
 // create LINE SDK config from env variables
 const config = {
@@ -46,7 +46,7 @@ function handleEvent(event) {
   } else if (event.message.text === "เพิ่มงานใหม่") {
     const payload = {
       type: "text",
-      text: "ต้องการเพิ่มงานอะไรครับ",
+      text: ["ต้องการเพิ่มงานอะไรครับ", `${event.source.userId}`],
     };
     return client.replyMessage(event.replyToken, payload);
   } else if (event.message.text === "ตารางงาน") {
