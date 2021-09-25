@@ -40,14 +40,14 @@ function handleEvent(event) {
   ) {
     const payload = {
       type: "text",
-      text: "hello from Heroku Server",
+      text: `hello from someone`,
     };
     return (
       client
         //.replyMessage(event.replyToken, payload)
         .pushMessage({
-          to: "U30918c965c0984fb90f0dca605c61617",
-          messages: "hello hello from someone",
+          U30918c965c0984fb90f0dca605c61617,
+          payload,
         })
     );
   } else if (event.message.text === "เพิ่มงานใหม่") {
