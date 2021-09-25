@@ -3,11 +3,7 @@
 const line = require("@line/bot-sdk");
 const express = require("express");
 
-const LINE_MESSAGING_API = "https://api.line.me/v2/bot/message";
-const LINE_HEADER = {
-  "Content-Type": "application/json",
-  Authorization: `Bearer Q4b+wmv9dBIZxyoM7/vqvfINbBIcrEQShuMCTXZ23ZpOqakgAeVF6RSI9qHQ/aT7LgfFAdWT/7Fp8O44V9bjq5mf7yfk5A4hsQIWOqMNLz7wK2M30MlH47ktf43vxYnPy9p7SgpQRm4hSwVP43rclgdB04t89/1O/w1cDnyilFU=`,
-};
+const win = "U30918c965c0984fb90f0dca605c61617";
 
 const config = {
   channelAccessToken:
@@ -29,12 +25,18 @@ app.post("/callback", line.middleware(config), async (req, res) => {
 });
 
 const handleEvent = (event) => {
-  if (event.message.text === "get use id") {
+  if (event.message.text === "get user id") {
     const payload = {
       type: "text",
       text: `${event.source.userId}`,
     };
     return client.replyMessage(event.replyToken, payload);
+  } else if (event.message.text === "test push") {
+    const payload = {
+      type: "text",
+      text: "message from test push message",
+    };
+    return client.pushMessage(win, payload);
   } else {
     const echo = { type: "text", text: event.message.text };
     return client.replyMessage(event.replyToken, echo);
