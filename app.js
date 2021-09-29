@@ -24,8 +24,9 @@ mongoose
   });
 
 const config = {
-  channelAccessToken: process.env.CHANEL_ACCESS_TOKEN,
-  channelSecret: process.env.CHANEL_SECRET,
+  channelAccessToken:
+    "Q4b+wmv9dBIZxyoM7/vqvfINbBIcrEQShuMCTXZ23ZpOqakgAeVF6RSI9qHQ/aT7LgfFAdWT/7Fp8O44V9bjq5mf7yfk5A4hsQIWOqMNLz7wK2M30MlH47ktf43vxYnPy9p7SgpQRm4hSwVP43rclgdB04t89/1O/w1cDnyilFU=",
+  channelSecret: "bea26cdbe9c077b37770ad69ab939ef4",
 };
 const win = "U30918c965c0984fb90f0dca605c61617";
 const app = express();
