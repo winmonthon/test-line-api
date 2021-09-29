@@ -1,16 +1,25 @@
 import line from "@line/bot-sdk";
+import LineConfig from "../lineConfig.js";
 import dotenv from "dotenv";
 dotenv.config();
 
 const win = "U30918c965c0984fb90f0dca605c61617";
 const bam = "Ub271ef8465b45d4059554e9fe5392bc5";
 
-const config = {
-  channelAccessToken: process.env.CHANEL_ACCESS_TOKEN,
-  channelSecret: process.env.CHANEL_SECRET,
-};
+const client = new line.Client(LineConfig);
 
-const client = new line.Client(config);
+const LineController = {
+  async handleEvent(req, res) {
+    const event = req.body.events;
+    if (event.message.text === "hello") {
+      const payload = {
+        type: "text",
+        text: `${event.source.userId}`,
+      };
+      return client.replyMessage(event.replyToken, payload);
+    }
+  },
+};
 
 const lineController = (event) => {
   if (event.message.text === "get user id") {
@@ -36,4 +45,4 @@ const lineController = (event) => {
   return client.replyMessage(event.replyToken, echo);
 };
 
-export default lineController;
+export default LineController;
