@@ -6,6 +6,6 @@ import LineConfig from "./lineConfig.js";
 
 const router = express.Router();
 
-router.post("/", line.middleware(LineConfig), LineController.handleEvent);
-
+router.post("/", LineController.handleEvent);
+//line.middleware(LineConfig)
 export default router;
