@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Line handle
-app.post("/callback", LineRouter);
+app.use("/callback", LineRouter);
 //Task
 app.use("/task", TaskRouter);
 //Users
