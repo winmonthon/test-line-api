@@ -10,7 +10,7 @@ const client = new line.Client(LineConfig);
 
 const LineController = {
   async handleEvent(req, res) {
-    const event = req.body.events;
+    const event = req.body.events[0];
     if (event.message.text === "hello") {
       const payload = {
         type: "text",
