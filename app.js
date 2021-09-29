@@ -27,15 +27,39 @@ const config = {
   channelAccessToken: process.env.CHANEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANEL_SECRET,
 };
-
+const win = "U30918c965c0984fb90f0dca605c61617";
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Line handle
 app.post("/callback", line.middleware(config), async (req, res) => {
-  await LineController(req.body.events);
+  await lineController(req.body.events[0]);
 });
+
+const lineController = (event) => {
+  if (event.message.text === "get user id") {
+    const payload = {
+      type: "text",
+      text: `${event.source.userId}`,
+    };
+    return client.replyMessage(event.replyToken, payload);
+  } else if (event.message.text === "test push") {
+    const payload = {
+      type: "text",
+      text: "message from test push message",
+    };
+    return client.pushMessage(win, payload);
+  } else if (event.message.text.startsWith("ชื่อ ")) {
+    const payload = {
+      type: "text",
+      text: `คุณชื่อ ${event.message.text}`,
+    };
+    return client.replyMessage(event.replyToken, payload);
+  }
+  const echo = { type: "text", text: event.message.text };
+  return client.replyMessage(event.replyToken, echo);
+};
 
 //Task
 app.use("/task", TaskRouter);
