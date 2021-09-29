@@ -34,32 +34,26 @@ app.use(express.json());
 
 //Line handle
 app.post("/callback", line.middleware(config), (req, res) => {
-  lineController(req.body.events);
+  Promise.all(req.body.events.map(handleEvent))
+    .then((result) => res.json(result))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).end();
+    });
 });
 
-const lineController = (event) => {
-  if (event.message.text === "get user id") {
-    const payload = {
-      type: "text",
-      text: `${event.source.userId}`,
-    };
-    return client.replyMessage(event.replyToken, payload);
-  } else if (event.message.text === "test push") {
-    const payload = {
-      type: "text",
-      text: "message from test push message",
-    };
-    return client.pushMessage(win, payload);
-  } else if (event.message.text.startsWith("ชื่อ ")) {
-    const payload = {
-      type: "text",
-      text: `คุณชื่อ ${event.message.text}`,
-    };
-    return client.replyMessage(event.replyToken, payload);
+function handleEvent(event) {
+  if (event.type !== "message" || event.message.type !== "text") {
+    // ignore non-text-message event
+    return Promise.resolve(null);
   }
+
+  // create a echoing text message
   const echo = { type: "text", text: event.message.text };
+
+  // use reply API
   return client.replyMessage(event.replyToken, echo);
-};
+}
 
 //Task
 app.use("/task", TaskRouter);
