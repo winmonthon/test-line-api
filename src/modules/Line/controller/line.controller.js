@@ -6,8 +6,8 @@ const win = "U30918c965c0984fb90f0dca605c61617";
 const bam = "Ub271ef8465b45d4059554e9fe5392bc5";
 
 const config = {
-  channelAccessToken: process.env.TOKEN,
-  channelSecret: process.env.SECRET,
+  channelAccessToken: process.env.CHANEL_ACCESS_TOKEN,
+  channelSecret: process.env.CHANEL_SECRET,
 };
 
 const client = new line.Client(config);

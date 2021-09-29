@@ -24,8 +24,8 @@ mongoose
   });
 
 const config = {
-  channelAccessToken: process.env.TOKEN,
-  channelSecret: process.env.SECRET,
+  channelAccessToken: process.env.CHANEL_ACCESS_TOKEN,
+  channelSecret: process.env.CHANEL_SECRET,
 };
 
 const app = express();
@@ -34,7 +34,7 @@ app.use(express.json());
 
 //Line handle
 app.post("/callback", line.middleware(config), async (req, res) => {
-  await LineController(req.body.events[0]);
+  await LineController(req.body.events);
 });
 
 //Task
