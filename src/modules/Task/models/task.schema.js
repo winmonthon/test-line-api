@@ -1,42 +1,85 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
+import StatusEnum from "../../../common/statusEnum.js";
+import RoleEnum from "../../../common/roleEnum.js";
 
-const Schema = mongoose.Schema;
+const UserField = new mongoose.Schema(
+  {
+    userId: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    lineUid: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: RoleEnum,
+      default: RoleEnum.NONE,
+    },
+    tel: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: StatusEnum,
+      default: StatusEnum.ACTIVE,
+    },
+  },
+  { _id: false, strict: true }
+);
 
-const TaskSchema = new Schema({
-  id: {
-    type: Number,
-    required: true,
+const TaskSchema = new mongoose.Schema(
+  {
+    taskId: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      default: "",
+    },
+    dueDate: {
+      type: Date,
+      default: null,
+    },
+    assignBy: {
+      // Supervisor
+      type: UserField,
+      default: null,
+    },
+    createBy: {
+      // Sale
+      type: UserField,
+      default: null,
+    },
+    engineer: {
+      // Engineer
+      type: UserField,
+      default: null,
+    },
+    taskStatus: {
+      type: String,
+      enum: ["progress", "pending", "resolved"],
+      default: "pending",
+    },
+    status: {
+      type: String,
+      enum: StatusEnum,
+      default: StatusEnum.ACTIVE,
+    },
   },
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    default: "",
-  },
-  dueDate: {
-    type: Datetime,
-    default: null,
-  },
-  assignBy: {
-    // Supervisor
-    type: UserSchema,
-    default: null,
-  },
-  createBy: {
-    // Sale
-    type: UserSchema,
-    default: null,
-  },
-  engineer: {
-    // Engineer
-    type: UserSchema,
-    default: null,
-  },
-  createdAt: TIMESTAMP,
-  updatedAt: TIMESTAMP,
-});
+  { timestamps: true, strict: true }
+);
 
-const TaskModel = mongoose.model("Task", TaskSchema);
+const TaskModel = mongoose.model("task", TaskSchema);
 export default TaskModel;

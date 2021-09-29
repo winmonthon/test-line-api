@@ -1,17 +1,18 @@
-const line = require("@line/bot-sdk");
+import line from "@line/bot-sdk";
+import dotenv from "dotenv";
+dotenv.config();
 
 const win = "U30918c965c0984fb90f0dca605c61617";
 const bam = "Ub271ef8465b45d4059554e9fe5392bc5";
 
 const config = {
-  channelAccessToken:
-    "Q4b+wmv9dBIZxyoM7/vqvfINbBIcrEQShuMCTXZ23ZpOqakgAeVF6RSI9qHQ/aT7LgfFAdWT/7Fp8O44V9bjq5mf7yfk5A4hsQIWOqMNLz7wK2M30MlH47ktf43vxYnPy9p7SgpQRm4hSwVP43rclgdB04t89/1O/w1cDnyilFU=",
-  channelSecret: "bea26cdbe9c077b37770ad69ab939ef4",
+  channelAccessToken: process.env.TOKEN,
+  channelSecret: process.env.SECRET,
 };
 
 const client = new line.Client(config);
 
-const handleEvent = (event) => {
+const lineController = (event) => {
   if (event.message.text === "get user id") {
     const payload = {
       type: "text",
@@ -35,4 +36,4 @@ const handleEvent = (event) => {
   return client.replyMessage(event.replyToken, echo);
 };
 
-module.export = handleEvent;
+export default lineController;
