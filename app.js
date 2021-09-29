@@ -33,8 +33,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Line handle
-app.post("/callback", line.middleware(config), async (req, res) => {
-  await lineController(req.body.events[0]);
+app.post("/callback", line.middleware(config), (req, res) => {
+  lineController(req.body.events);
 });
 
 const lineController = (event) => {
