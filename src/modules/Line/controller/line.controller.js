@@ -12,7 +12,9 @@ const LineController = {
   async handleEvent(req, res) {
     const event = req.body.events[0];
     const echo = { type: "text", text: event.message.text };
-    return client.replyMessage(event.replyToken, echo);
+    //res.json({ success: true, message: "token require" });
+
+    return client.replyMessage(event.replyToken, echo).status(200);
   },
 };
 
