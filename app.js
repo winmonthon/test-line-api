@@ -1,12 +1,11 @@
 "use strict";
 import mongoose from "mongoose";
-import line from "@line/bot-sdk";
+
 //import autoIncrement from "mongoose-auto-increment";
 import express from "express";
 import TaskRouter from "./src/modules/Task/task.route.js";
 import UsersRoter from "./src/modules/User/user.router.js";
 import LineRouter from "./src/modules/Line/line.route.js";
-
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -25,10 +24,11 @@ mongoose
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 //Line handle
 app.use("/callback", LineRouter);
+
+app.use(express.json()); //!!!!!!!!!!!!!alway must use it before Line handle!!!!!!!!!!!!!!!
 //Task
 app.use("/task", TaskRouter);
 //Users
