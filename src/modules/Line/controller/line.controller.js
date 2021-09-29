@@ -11,7 +11,8 @@ const client = new line.Client(LineConfig);
 const LineController = {
   async handleEvent(req, res) {
     const event = req.body.events[0];
-    return client.replyMessage(event.replyToken, "hi");
+    const echo = { type: "text", text: event.message.text };
+    return client.replyMessage(event.replyToken, echo);
   },
 };
 
