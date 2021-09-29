@@ -1,11 +1,11 @@
 {
-  "name": "echo-bot",
+  "name": "line-assign",
   "version": "0.0.0",
   "description": "An example LINE bot just to echo messages",
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node ."
+    "start": "node app.js"
   },
   "dependencies": {
     "@line/bot-sdk": "^7.4.0",
