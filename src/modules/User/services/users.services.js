@@ -15,7 +15,7 @@ const usersService = {
     return UserModel.findOneAndUpdate({ userId: id }, payload);
   },
   login(name) {
-    return UserModel.find({ name: name });
+    return UserModel.find({ tel: tel });
   },
 };
 

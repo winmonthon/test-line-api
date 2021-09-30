@@ -6,6 +6,8 @@ import express from "express";
 import TaskRouter from "./src/modules/Task/task.route.js";
 import UsersRoter from "./src/modules/User/user.router.js";
 import LineRouter from "./src/modules/Line/line.route.js";
+import AuthRouter from "./src/modules/Auth/Auth.route.js";
+import AuthController from "./src/modules/Auth/controller/auth.controller.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -33,6 +35,10 @@ app.use(express.json()); //!!!!!!!!!!!!!alway must use it before Line handle!!!!
 app.use("/task", TaskRouter);
 //Users
 app.use("/users", UsersRoter);
+//Auth
+app.use("/auth", AuthRouter);
+//login
+app.post("/login", AuthController.login);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

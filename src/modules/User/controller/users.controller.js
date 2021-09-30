@@ -2,8 +2,9 @@ import humps from "humps";
 import UsersService from "../services/users.services.js";
 import shortid from "shortid";
 import StatusEnum from "../../../common/statusEnum.js";
-import usersService from "../services/users.services.js";
+import AuthService from "../../Auth/services/auth.service.js";
 import { createToken } from "../../../middlewares/authentication.js";
+import md5 from "md5";
 
 const createId = shortid.generate();
 
@@ -15,16 +16,20 @@ const usersController = {
       lineUid,
       role,
       tel,
-      dataStatus,
+      Status,
+      password,
     } = req.body;
+
     const created = await UsersService.createUser({
       userId,
       name,
       lineUid,
       role,
       tel,
-      dataStatus,
+      Status,
     });
+
+    await AuthService.create({ password: md5(password), tel, uid: lineUid });
     res.json({
       success: true,
       data: created,
