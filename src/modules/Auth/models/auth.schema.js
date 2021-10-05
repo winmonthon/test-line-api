@@ -8,8 +8,8 @@ const AuthSchema = new Schema({
     type: String,
     required: true,
   },
-  uid: {
-    type: Number,
+  userId: {
+    type: String,
     required: true,
   },
   password: {

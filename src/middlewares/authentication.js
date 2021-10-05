@@ -5,12 +5,13 @@ dotenv.config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
-export const createToken = ({ name, role, lineUId }) =>
+export const createToken = ({ name, role, lineUid, userId }) =>
   JWT.sign(
     {
       name,
+      userId,
       role,
-      lineUId,
+      lineUid,
     },
     SECRET_KEY,
     {

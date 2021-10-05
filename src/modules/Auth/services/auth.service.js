@@ -1,27 +1,23 @@
-import UserModel from "../../User/models/user.schema.js";
-import AuthModel from "../models/auth.schema.js";
-import StatusEnum from "../../../common/statusEnum.js";
+import AuthModel from '../models/auth.schema.js'
+import StatusEnum from '../../../common/statusEnum.js'
 
 const authService = {
   create(payload) {
-    return new AuthModel(payload).save();
+    return new AuthModel(payload).save()
   },
   //TODO: use query
   check(payload) {
-    return AuthModel.find(payload);
-  },
-  login(tel) {
-    return UserModel.find({ tel });
+    return AuthModel.find(payload)
   },
   getAllAuth() {
-    return AuthModel.find({ status: StatusEnum.ACTIVE });
+    return AuthModel.find({ status: StatusEnum.ACTIVE })
   },
-  updateAuth(id, payload) {
-    return AuthModel.findByIdAndUpdate({ _id: id }, payload);
+  updateAuth(userId, payload) {
+    return AuthModel.findOneAndUpdate({ userId }, payload)
   },
-  deleteAuth(id, payload) {
-    return AuthModel.findOneAndUpdate({ _id: id }, payload);
+  deleteAuth(userId, payload) {
+    return AuthModel.findOneAndUpdate({ userId }, payload)
   },
-};
+}
 
-export default authService;
+export default authService

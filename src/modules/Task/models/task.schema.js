@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import StatusEnum from "../../../common/statusEnum.js";
 import RoleEnum from "../../../common/roleEnum.js";
+import autoIncrement from "mongoose-auto-increment";
 
 const UserField = new mongoose.Schema(
   {
@@ -67,6 +68,7 @@ const TaskSchema = new mongoose.Schema(
       type: UserField,
       default: null,
     },
+
     taskStatus: {
       type: String,
       enum: ["progress", "pending", "resolved"],

@@ -1,12 +1,14 @@
-import humps from "humps";
-import UsersService from "../services/users.services.js";
-import shortid from "shortid";
-import StatusEnum from "../../../common/statusEnum.js";
-import AuthService from "../../Auth/services/auth.service.js";
-import { createToken } from "../../../middlewares/authentication.js";
-import md5 from "md5";
+import UsersService from '../services/users.services.js'
+import shortid from 'shortid'
+import StatusEnum from '../../../common/statusEnum.js'
+import AuthService from '../../Auth/services/auth.service.js'
+import { createToken } from '../../../middlewares/authentication.js'
 
-const createId = shortid.generate();
+import md5 from 'md5'
+import dotenv from 'dotenv'
+dotenv.config()
+
+const createId = shortid.generate()
 
 const usersController = {
   async createNewUser(req, res) {
@@ -16,9 +18,9 @@ const usersController = {
       lineUid,
       role,
       tel,
-      Status,
+      status,
       password,
-    } = req.body;
+    } = req.body
 
     const created = await UsersService.createUser({
       userId,
@@ -26,72 +28,70 @@ const usersController = {
       lineUid,
       role,
       tel,
-      Status,
-    });
+      status,
+    })
 
-    await AuthService.create({ password: md5(password), tel, uid: lineUid });
+    await AuthService.create({
+      password: md5(`${password}${process.env.SALT}`),
+      tel,
+      userId,
+    })
     res.json({
       success: true,
       data: created,
-    });
+    })
   },
   async updateUser(req, res) {
-    const { id } = req.params;
-    const { name, lineUid, role, tel } = req.body;
-    const updated = await UsersService.updateUser(id, {
+    const { userId } = req.params
+    const { name, lineUid, role, tel } = req.body
+    const updated = await UsersService.updateUser(userId, {
       name,
       lineUid,
       role,
       tel,
-    });
+    })
+    await AuthService.updateAuth(userId, { tel })
     res.json({
       success: true,
       data: updated,
-    });
+    })
   },
   async getAllUsers(req, res) {
-    res.json({
+    const { page = 1, size = 10 } = req.query
+
+    const calSkip = (page, size) => {
+      return (page - 1) * size
+    }
+    const calPage = (count, size) => {
+      return Math.ceil(count / size)
+    }
+
+    const results = await UsersService.getAllUsers()
+      .skip(calSkip(page, size))
+      .limit(parseInt(size))
+      .exec()
+
+    const count = await UsersService.getAllUsers().countDocuments().exec()
+
+    res.status(200).json({
       success: true,
-      data: await UsersService.getAllUsers(),
-    });
+      currentPage: page,
+      allPages: calPage(count, size),
+      currentCount: results.length,
+      totalCount: count,
+      data: results,
+    })
   },
   async deleteUser(req, res) {
-    const { id } = req.params;
-    const { dataStatus = StatusEnum.DELETED } = req.body;
-    const deleted = await UsersService.deleteUser(id, { dataStatus });
+    const { userId } = req.params
+    const { status = StatusEnum.DELETED } = req.body
+    const deleted = await UsersService.deleteUser(userId, { status })
 
     res.json({
       success: true,
       data: deleted,
-    });
+    })
   },
-  async login(req, res) {
-    const { name } = req.body;
-    const found = await usersService.login(name);
+}
 
-    if (found.length !== 0) {
-      const token = createToken({
-        name: found[0].name,
-        role: found[0].role,
-        userId: found[0].userId,
-      });
-
-      res
-        .json({
-          success: true,
-          data: {
-            user: found,
-            token,
-          },
-        })
-        .status(200);
-    } else {
-      res.json({
-        success: false,
-        message: "user not found",
-      });
-    }
-  },
-};
-
-export default usersController;
+export default usersController
