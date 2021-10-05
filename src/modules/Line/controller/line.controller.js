@@ -54,7 +54,7 @@ const LineController = {
         if (text.startsWith('งานใหม่')) {
           payload = {
             type: 'text',
-            text: `กรุณากรอกรายละเอียดงานโดยขึ้นต้นด้วยคำว่า "รายละเอียด" ตัวอย่าง "รายละเอียดงาน ซ่อมเครื่องทำความร้อนที่ชั้น 2"`,
+            text: `กรุณากรอกรายละเอียดงานโดยขึ้นต้นด้วยคำว่า "รายละเอียด" ตัวอย่าง "รายละเอียด ซ่อมเครื่องทำความร้อนที่ชั้น 2"`,
           }
           await client.replyMessage(event.replyToken, payload)
           return (taskName = text.split(' ')[1])
