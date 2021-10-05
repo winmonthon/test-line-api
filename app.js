@@ -46,6 +46,12 @@ app.use('/task', TaskRouter)
 app.use('/users', UsersRoter)
 //Auth
 app.use('/auth', AuthRouter)
+app.get('/', (req, res) =>
+  res.send({
+    message: 'Hello',
+    date: new Date(),
+  })
+)
 //login
 app.post('/login', AuthController.login)
 
